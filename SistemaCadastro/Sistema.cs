@@ -49,6 +49,13 @@ namespace SistemaCadastro
         private void Sistema_Load(object sender, EventArgs e)
         {
             listaCBGeneros();
+            lista_gridBandas();
+        }
+
+        void lista_gridBandas()
+        {
+            ConectaBanco con = new ConectaBanco();
+            dgBandas.DataSource = con.listaBandas();
         }
 
         public void listaCBGeneros()
@@ -64,7 +71,8 @@ namespace SistemaCadastro
 
         private void txtBusca_TextChanged(object sender, EventArgs e)
         {
-  
+            (dgBandas.DataSource as DataTable).DefaultView.RowFilter =
+                string.Format("nome like '{0}%'", txtBusca.Text);
         }
 
         private void btnRemoveBanda_Click(object sender, EventArgs e)
