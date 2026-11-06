@@ -56,6 +56,7 @@ namespace SistemaCadastro
         {
             ConectaBanco con = new ConectaBanco();
             dgBandas.DataSource = con.listaBandas();
+            dgBandas.Columns["idbandas"].Visible = false;
         }
 
         public void listaCBGeneros()
@@ -77,7 +78,26 @@ namespace SistemaCadastro
 
         private void btnRemoveBanda_Click(object sender, EventArgs e)
         {
-           
+            int linha = dgBandas.CurrentRow.Index;
+            int id = Convert.ToInt32(
+                    dgBandas.Rows[linha].Cells["idbandas"].Value.ToString());
+            DialogResult resp = MessageBox.Show("Tem certeza que deseja excluir?",
+                "Remove Banda", MessageBoxButtons.OKCancel);
+            if (resp == DialogResult.OK)
+            {
+                ConectaBanco con = new ConectaBanco();
+                bool retorno = con.deletaBanda(id);
+                if (retorno == true)
+                {
+                    MessageBox.Show("Banda excluida com sucesso!");
+                    lista_gridBandas();
+                }// fim if retorno true
+                else
+                    MessageBox.Show(con.mensagem);
+            }// fim if Ok Cancela
+            else
+                MessageBox.Show("Exclusão cancelada");
+
         }
 
         private void btnAlterar_Click(object sender, EventArgs e)
@@ -119,6 +139,7 @@ namespace SistemaCadastro
                 MessageBox.Show(con.mensagem);
 
             limpaCampos();
+            lista_gridBandas();
         }
     }
 }
