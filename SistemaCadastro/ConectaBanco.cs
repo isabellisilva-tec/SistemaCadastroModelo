@@ -136,5 +136,26 @@ namespace SistemaCadastro
         } // fim update_banda
 
 
-        } // fim classe
+        public bool insereGenero(string nome)
+        {
+            try
+            {
+                conexao.Open();
+                MySqlCommand cmd =
+                    new MySqlCommand("sp_insereGenero", conexao);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("nome", nome);
+                cmd.ExecuteNonQuery();//executar no banco
+                return true;
+            }
+            catch (MySqlException erro)
+            {
+                mensagem = erro.Message;
+                return false;
+            }
+
+        }// fim do insereGenero
+
+
+    } // fim classe
 }
